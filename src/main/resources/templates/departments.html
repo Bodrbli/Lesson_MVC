@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>Departments</title>
+    <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+<div class="container">
+    <div class="modal">
+        <form th:if="${department.id == null}" class="form" th:object="${department}" method="post"  action="/admin/department">
+            <input type="text" class="inputText" placeholder="название" th:field="*{name}">
+            <input type="text" class="inputText" placeholder="заметка" th:field="*{note}">
+            <input th:if="${department.parentDpt == null}" type="text" class="inputText" name="parentId" placeholder="id родительского отдела">
+            <input th:unless="${department.parentDpt == null}" type="text" class="inputText" name="parentId" placeholder="id родительского отдела"
+                        th:value="${department.parentDpt.id}">
+            <input type="submit" class="inputSubmit" value="add">
+        </form>
+        <form th:unless="${department.id == null}" class="form" th:object="${department}" method="post" th:action="@{'/admin/department/' + ${department.id}}">
+            <input type="text" th:field="*{id}">
+            <input type="text" class="inputText" placeholder="название" th:field="*{name}">
+            <input type="text" class="inputText" placeholder="заметка" th:field="*{note}">
+            <input th:if="${department.parentDpt == null}" type="text" class="inputText" name="parentId" placeholder="id родительского отдела">
+            <input th:unless="${department.parentDpt == null}" type="text" class="inputText" name="parentId" placeholder="id родительского отдела"
+                   th:value="${department.parentDpt.id}">
+            <input type="submit" class="inputSubmit" value="add">
+        </form>
+        <th:block th:if="${departments != null}">
+            <table class="table">
+                <tr>
+                    <th>id</th>
+                    <th>Название</th>
+                    <th>Заметка</th>
+                    <th>^ отдел</th>
+                    <th>edit</th>
+                </tr>
+                <tr th:each="dept: ${departments}">
+                    <td>[[${dept.id}]]</td>
+                    <td>[[${dept.name}]]</td>
+                    <td>[[${dept.note}]]</td>
+                    <td th:if="${dept.parentDpt != null}">[[${dept.parentDpt.id}]]</td>
+                    <td th:unless="${dept.parentDpt != null}">root</td>
+                    <td><a class="a_button" th:href="@{'/admin/department/' + ${dept.id}}">edit</a></td>
+                </tr>
+            </table>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>
