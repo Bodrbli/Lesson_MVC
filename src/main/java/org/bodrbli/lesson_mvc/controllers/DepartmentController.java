@@ -15,7 +15,6 @@ public class DepartmentController {
     @GetMapping
     public String departments(Model model) {
         Department dpt = new Department();
-        System.out.println(dpt);
         model.addAttribute("department", dpt);
         model.addAttribute("departments", deptService.findAll());
         return "departments";

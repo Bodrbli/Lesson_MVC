@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+  <meta charset="UTF-8">
+  <title>Professions</title>
+  <link rel="stylesheet" href="/styles/style.css">
+</head>
+<body>
+<div class="container">
+  <div class="modal">
+    <form th:if="${profession.id == null}" th:object="${profession}" method="post"  action="/admin/profession">
+      <input type="text" class="inputText" placeholder="название" th:field="*{name}">
+      <input type="text" class="inputText" placeholder="заметка" th:field="*{note}">
+      <input type="submit" class="inputSubmit" value="add">
+    </form>
+
+    <form th:unless="${profession.id == null}" class="form" th:object="${profession}" method="post" th:action="@{'/admin/profession/' + ${profession.id}}">
+      <input type="hidden" th:field="*{id}">
+      <input type="text" class="inputText" placeholder="название" th:field="*{name}">
+      <input type="text" class="inputText" placeholder="заметка" th:field="*{note}">
+      <input type="submit" class="inputSubmit" value="update">
+    </form>
+
+    <th:block th:if="${professions != null}">
+      <table class="table">
+        <tr>
+          <th>id</th>
+          <th>Название</th>
+          <th>Заметка</th>
+          <th>edit</th>
+          <th>delete</th>
+        </tr>
+        <tr th:each="prof: ${professions}">
+          <td>[[${prof.id}]]</td>
+          <td>[[${prof.name}]]</td>
+          <td>[[${prof.note}]]</td>
+          <td><a class="a_button" th:href="@{'/admin/profession/' + ${prof.id}}">edit</a></td>
+          <td><a class="a_button" th:href="@{'/admin/profession/delete/' + ${prof.id}}">delete</a></td>
+        </tr>
+      </table>
+    </th:block>
+  </div>
+</div>
+</body>
+</html>
